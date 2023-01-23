@@ -8,6 +8,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { History } from "../components/History";
 import { useHistoryContext } from "../components/HistoryComp";
+import { Loader } from "../components/Loader";
 
 const styles = {
   container: {
@@ -65,16 +66,16 @@ const styles = {
     flexDirection: "column",
   },
 };
+//login pass email
+// username data (sessionToken => )
 
 export const App = () => {
   const { data, setData } = useHistoryContext();
   const { isClicked, setIsClicked } = useHistoryContext();
-  console.log(isClicked);
   const { id } = useParams();
   const [URL, setURL] = useState("");
   const [shortURL, setShortURL] = useState("");
   const url = useRef("");
-  console.log(data);
   const change = (e) => {
     if (e.target.value === "") {
       setURL("");
@@ -82,13 +83,21 @@ export const App = () => {
   };
   const link = () => {
     axios
-      .post("http://localhost:8000/links", {
-        URL: url.current.value,
-      })
+      .post(
+        "http://localhost:8000/links",
+        {
+          URL: url.current.value,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then(function (response) {
         console.log("LOG: ", response);
         setURL(response.data.data.URL);
-        setShortURL("http://localhost:3000/links/ " + response.data.data._id);
+        setShortURL("http://localhost:3000/links/" + response.data.data._id);
         if (isClicked) {
           setIsClicked(false);
         }
@@ -101,12 +110,25 @@ export const App = () => {
   const Board = () => {
     return (
       <div style={styles.HistoryContainer}>
-        {data.map((el, i) => {
+        {data?.map((el, i) => {
           return <History link={el} index={i} />;
         })}
       </div>
     );
   };
+  // const Con = () => {
+  //   if (data) {
+  //     if (isClicked) {
+  //       <Board />;
+  //     } else {
+  //       if (URL) {
+  //         <Comp URL={URL} shortURL={shortURL} />;
+  //       }
+  //     }
+  //   } else {
+  //     <Loader />;
+  //   }
+  // };
 
   return (
     <div style={styles.container}>
@@ -132,7 +154,6 @@ export const App = () => {
         </div>
         {isClicked && <Board />}
         {isClicked ? "" : URL && <Comp URL={URL} shortURL={shortURL} />}
-
         <Footer />
       </div>
     </div>

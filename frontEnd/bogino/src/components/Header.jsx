@@ -48,7 +48,11 @@ export const Header = () => {
 
   const handleClick = async () => {
     await axios
-      .get("http://localhost:8000/links")
+      .get("http://localhost:8000/links", {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
       .then((response) => {
         console.log("=====>", response.data.data);
         setData(response.data.data);
@@ -79,7 +83,9 @@ export const Header = () => {
         }}
       >
         <p style={styles.text}>ХЭРХЭН АЖИЛЛАДАГ ВЭ?</p>
-        <input style={styles.input} value="НЭВТРЭХ" type="button" />
+        <Link to="/login">
+          <input style={styles.input} value="НЭВТРЭХ" type="button" />
+        </Link>
       </div>
     </div>
   );

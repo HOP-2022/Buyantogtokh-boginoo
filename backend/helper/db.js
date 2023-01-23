@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const uri = "mongodb+srv://Buyantogtokh:Buyantogtokh@cluster0.xmhmn3a.mongodb.net/?retryWrites=true&w=majority";
+const dotenv = require("dotenv");
+dotenv.config()
+const uri =  process.env.MONGODB_ATLAS_URI || ' ';
 
 mongoose.set('strictQuery', false);
 const connect= async () => {

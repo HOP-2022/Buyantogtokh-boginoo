@@ -6,6 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import { Redirect } from './pages/Redirect';
 import { History } from './components/History';
 import { HistoryComp } from './components/HistoryComp';
+import { Login } from './pages/Login';
+import { SignUp } from './pages/SignUp';
+import { ForgotPass } from './pages/ForgotPass';
 
 
 const router = createBrowserRouter([
@@ -16,6 +19,18 @@ const router = createBrowserRouter([
   {
     path:'/links/:id',
     element:<Redirect/>
+  },
+  {
+    path:'/login',
+    element:<Login/>
+  },
+  {
+    path:'/signup',
+    element:<SignUp/>
+  },
+   {
+    path:'/forgotpass',
+    element:<ForgotPass/>
   },
 ])
 

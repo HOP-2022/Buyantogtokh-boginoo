@@ -6,13 +6,19 @@ const {
     getLinks,
     createLink,
     deleteLink,
+    
 
-} = require("../controller/linkController")
+} = require("../controller/linkController");
+const { auth } = require("../middlewares/auth");
  
+router.use(auth);
 router 
-    .get("/:id", getLink)
-    .get("/", getLinks)
     .post('/', createLink)
+    .get("/:id", getLink)
+    .get("/",  getLinks)
     .delete('/:id', deleteLink)
 
 module.exports = router;
+
+// bcrypt.hash()
+// bcrypt.compare()
