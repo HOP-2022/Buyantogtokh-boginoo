@@ -7,7 +7,7 @@ exports.createUser = async (req, res ,next ) => {
     try{
         const { password,  email} = req.body
         const existingUser = await UserModel.findOne({ email : email})
-        if(existingUser){
+        if(existingUser){   
             return res.status(409).json({message : "burtgeltei hereglegc bn"})
         }
         const hashedPassword = await bcrypt.hash(password, 10)
@@ -21,16 +21,6 @@ exports.createUser = async (req, res ,next ) => {
             message: 'created',
             data: createUser,
             token: token
-            //   message: created
-            //   data: {
-            //    _id: hjh32jk
-            //    email: sasfsa@mail.com
-            //    password: sfnalafr3rfegregbhebr
-            //   },
-            //   token: "gfsdgjdgjkh34kjh43kjh342ihrtkjhk4htjkjtkl43tjk4tjkl" 
-            // 
-            //
-            //
         })   
     }catch(error) {
         return res.status(500).json({message: error, data: null});
@@ -43,11 +33,11 @@ exports.login = async (req, res , next) => {
         const { password,  email} = req.body
         const existingEmail = await UserModel.findOne({email: email})
         if(!existingEmail){
-            return res.status(409).json({message : "burtgelgui hereglegc bn"})
+            return res.status(409).json({success: false, message : "burtgelgui hereglegc bn"})
         }
         const isValid = await bcrypt.compare(password, existingEmail.password)
         if(!isValid){
-            return res.status(409).json({message : "nuuts ug buruu bn"})
+            return res.status(409).json({success: false, message : "nuuts ug buruu bn"})
         }
         const token = jwt.sign({email: existingEmail.email, id: existingEmail._id}, SECRET_KEY)
          res.status(200).json({

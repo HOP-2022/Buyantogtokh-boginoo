@@ -8,7 +8,14 @@ export function HistoryComp({ children }) {
   const [auth, setAuth] = useState();
   return (
     <HistoryContext.Provider
-      value={{ data, setData, isClicked, setIsClicked, auth, setAuth }}
+      value={{
+        data,
+        setData,
+        isClicked,
+        setIsClicked,
+        auth,
+        setAuth,
+      }}
     >
       {children}
     </HistoryContext.Provider>

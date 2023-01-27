@@ -5,7 +5,7 @@ import "@fontsource/ubuntu";
 import { Footer } from "../components/Footer";
 import { Comp } from "../components/Comp";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { History } from "../components/History";
 import { useHistoryContext } from "../components/HistoryComp";
 import { Loader } from "../components/Loader";
@@ -65,13 +65,24 @@ const styles = {
     alignItems: "center",
     flexDirection: "column",
   },
+  historyText: {
+    fontFamily: "Ubuntu",
+    fontStyle: "Bold",
+    fontSize: 30,
+    lineHeight: 23,
+    lineHeight: "100%",
+    align: "Left",
+    verticalAlign: "Top",
+    color: "#02B589",
+    marginRight: "45%",
+  },
 };
 //login pass email
 // username data (sessionToken => )
 
 export const App = () => {
   const { data, setData } = useHistoryContext();
-  const { isClicked, setIsClicked } = useHistoryContext();
+  const { isClicked, setIsClicked, auth, setAuth } = useHistoryContext();
   const { id } = useParams();
   const [URL, setURL] = useState("");
   const [shortURL, setShortURL] = useState("");
@@ -82,6 +93,9 @@ export const App = () => {
     }
   };
   const link = () => {
+    if (!auth) {
+      return window.location.replace("/login");
+    }
     axios
       .post(
         "http://localhost:8000/links",
@@ -110,6 +124,7 @@ export const App = () => {
   const Board = () => {
     return (
       <div style={styles.HistoryContainer}>
+        <p style={styles.historyText}>ТҮҮХ</p>
         {data?.map((el, i) => {
           return <History link={el} index={i} />;
         })}

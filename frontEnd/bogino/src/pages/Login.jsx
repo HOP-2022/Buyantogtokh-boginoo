@@ -6,6 +6,7 @@ import "@fontsource/ubuntu";
 import { Link, Navigate } from "react-router-dom";
 import { useHistoryContext } from "../components/HistoryComp";
 import axios from "axios";
+import eye from "../assets/eye.svg";
 
 const styles = {
   container: {
@@ -22,6 +23,21 @@ const styles = {
     width: 500,
     height: 46,
     border: "none",
+    fontFamily: "Ubuntu",
+    fontStyle: "Bold",
+    fontSize: 20,
+    lineHeight: 23,
+    lineHeight: "100%",
+    align: "Left",
+    verticalAlign: "Top",
+    paddingLeft: 20,
+    boxShadow: "9px 8px 50px 0px #F0F0F0",
+  },
+  invalidInput: {
+    borderRadius: 100,
+    width: 500,
+    height: 46,
+    border: "1px solid red",
     fontFamily: "Ubuntu",
     fontStyle: "Bold",
     fontSize: 20,
@@ -107,12 +123,21 @@ const styles = {
     overflow: "hidden",
     color: "#02B589",
   },
+  eye: {
+    width: 40,
+    height: 40,
+    position: "absolute",
+    right: 20,
+  },
 };
 
 export const Login = () => {
   const email = useRef("");
   const password = useRef("");
   const { auth, setAuth } = useHistoryContext();
+  const [pass, setPass] = useState(true);
+  const [checkEmail, setCheckEmail] = useState(true);
+  const [show, setShow] = useState(false);
 
   const handle = () => {
     axios
@@ -126,6 +151,8 @@ export const Login = () => {
         setAuth(response.data.data._id);
       })
       .catch(function (error) {
+        setPass(error.response.data.success);
+        setCheckEmail(error.response.data.success);
         console.log(error);
       });
   };
@@ -133,6 +160,10 @@ export const Login = () => {
   if (auth) {
     return <Navigate replace to="/" />;
   }
+
+  const click = () => {
+    setShow(!show);
+  };
   return (
     <div>
       <Header />
@@ -142,17 +173,26 @@ export const Login = () => {
         <label style={styles.title}>Цахим хаяг:</label>
         <input
           placeholder={"name@mail.domain"}
-          style={styles.input}
+          style={checkEmail ? styles.input : styles.invalidInput}
           type="text"
           ref={email}
         />
         <label style={styles.title}>Нууц үг:</label>
-        <input
-          placeholder={"••••••••••"}
-          style={styles.input}
-          type="password"
-          ref={password}
-        />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            position: "relative",
+          }}
+        >
+          <input
+            placeholder={"••••••••••"}
+            style={pass ? styles.input : styles.invalidInput}
+            type={show ? "text" : "password"}
+            ref={password}
+          />
+          <img style={styles.eye} src={eye} onClick={click} />
+        </div>
         <div
           style={{
             display: "flex",

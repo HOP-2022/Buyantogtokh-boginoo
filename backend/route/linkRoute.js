@@ -19,6 +19,3 @@ router
     .delete('/:id', deleteLink)
 
 module.exports = router;
-
-// bcrypt.hash()
-// bcrypt.compare()
